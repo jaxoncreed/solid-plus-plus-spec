@@ -1,0 +1,84 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Alpharetta,_Georgia>
+  rdf:type dbo:City ;
+  rdf:label "Alpharetta, Georgia"^^xsd:string ;
+  dbo:populationTotal 57551 ;
+  dbo:isPartOf <http://dbpedia.org/resource/Georgia_(U.S._state)> ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Hendersonville,_North_Carolina>
+  rdf:type dbo:City ;
+  rdf:label "Hendersonville, North Carolina"^^xsd:string ;
+  dbo:populationTotal 13137 ;
+  dbo:isPartOf dbr:North_Carolina ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Neenah,_Wisconsin>
+  rdf:type dbo:City ;
+  rdf:label "Neenah, Wisconsin"^^xsd:string ;
+  dbo:populationTotal 25501 ;
+  dbo:isPartOf dbr:Wisconsin ;
+  dbo:country dbr:United_States .
+
+dbr:Atlanta
+  rdf:type dbo:City ;
+  rdf:label "Atlanta"^^xsd:string ;
+  dbo:populationTotal 463878 ;
+  dbo:isPartOf <http://dbpedia.org/resource/Georgia_(U.S._state)> ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Sunnyvale,_California>
+  rdf:type dbo:City ;
+  rdf:label "Sunnyvale, California"^^xsd:string ;
+  dbo:populationTotal 140081 ;
+  dbo:isPartOf dbr:California ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Durham,_North_Carolina>
+  rdf:type dbo:City ;
+  rdf:label "Durham, North Carolina"^^xsd:string ;
+  dbo:populationTotal 251893 ;
+  dbo:isPartOf dbr:North_Carolina ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Redwood_City,_California>
+  rdf:type dbo:City ;
+  rdf:label "Redwood City, California"^^xsd:string ;
+  dbo:populationTotal 76815 ;
+  dbo:isPartOf dbr:California ;
+  dbo:country dbr:United_States .
+
+<http://dbpedia.org/resource/Georgia_(U.S._state)>
+  rdf:type dbo:Region ;
+  dbo:country dbr:United_States ;
+  dbo:isPartOf
+    <http://dbpedia.org/resource/Alpharetta,_Georgia>,
+    dbr:Atlanta .
+
+dbr:Wisconsin
+  rdf:type dbo:Region ;
+  dbo:country dbr:United_States ;
+  dbo:isPartOf <http://dbpedia.org/resource/Neenah,_Wisconsin> .
+
+dbr:North_Carolina
+  rdf:type dbo:Region ;
+  dbo:country dbr:United_States ;
+  dbo:isPartOf
+    <http://dbpedia.org/resource/Hendersonville,_North_Carolina>,
+    <http://dbpedia.org/resource/Durham,_North_Carolina> .
+
+dbr:California
+  rdf:type dbo:Region ;
+  dbo:country dbr:United_States ;
+  dbo:isPartOf
+    <http://dbpedia.org/resource/Sunnyvale,_California>,
+    <http://dbpedia.org/resource/Redwood_City,_California> .
+
+dbr:United_States
+  rdf:type dbo:Country ;
+  rdf:label "United States"^^xsd:string .

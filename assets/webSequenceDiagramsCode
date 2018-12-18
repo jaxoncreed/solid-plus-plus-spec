@@ -1,0 +1,56 @@
+title One token can be used for all pods
+
+note over Alice's Browser: Has a token that represents Alice's WebId
+Alice's Browser->Alice's Pod: resource request + token
+Alice's Pod->Alice's Browser: resource
+Alice's Browser->Bob's Pod: resource request for a resource shared with Alice + token
+Bob's Pod->Alice's Pod: Token confirmation request
+Alice's Pod->Bob's Pod: Token confirmed
+Bob's Pod->Alice's Browser: resource
+
+
+
+
+
+title Implicit Flow
+
+note over Alice's Browser: Has the Solid++ browser extension installed.
+note over Alice's Pod: Whitelists only Bob's Pod
+Alice's Browser->3rd Party: Requests a UI
+3rd Party->Alice's Browser: Sends UI
+3rd Party->Alice's Browser: Sends CDN assets
+note over Alice's Browser: Assests are cached
+note over Alice's Browser: Alice clicks button to sign in with her pod
+Alice's Browser->Alice's Pod: Redirect to Sign in
+Alice's Pod-> Alice's Browser: Sign in UI
+note over Alice's Browser: Runs a script to see that the browser extension is installed
+opt The Solid++ browser extension is not installed
+    note over Alice's Browser: Alice is prompted to install the extension
+end
+opt Alice has not logged into the extension
+    note over Alice's Browser: Diplays login UI for alice to enter credentials
+    Alice's Browser->Alice's Pod: credentials
+    Alice's Pod->Alice's Browser: Token & x-allowed-domains
+    note over Alice's Browser: Saves token and x-allowed-domains globally via chrome extension
+end
+note over Alice's Browser: Extension now only allows requests to domains in x-allowed-domains
+Alice's Browser->Alice's Pod: resource request + token
+Alice's Pod->Alice's Browser: resource
+Alice's Browser->Bob's Pod: resource request for a resource shared with Alice + token
+Bob's Pod->Alice's Pod: Token confirmation request
+Alice's Pod->Bob's Pod: Token confirmed
+Bob's Pod->Alice's Browser: resource
+Alice's Browser-->3rd Party: Attempt to call 3rd Party blocked by extension
+
+
+
+title Client Credentials Grant
+
+Alice's Server->Alice's Pod: Client Secret
+Alice's Pod->Alice's Server: token
+Alice's Server->Alice's Pod: resource request + token
+Alice's Pod->Alice's Server: resource
+Alice's Server->Bob's Pod: resource request for a resource shared with Alice + token
+Bob's Pod->Alice's Pod: Token confirmation request
+Alice's Pod->Bob's Pod: Token confirmed
+Bob's Pod->Alice's Server: resource

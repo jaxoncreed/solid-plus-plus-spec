@@ -1,0 +1,79 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix o: <https://o.team/ontology/> .
+@prefix ldp: <https://www.w3.org/ns/ldp#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pod: <https://mypod.com> .
+@prefix n0: <https://mypod.com/resources/> .
+@prefix roles: <https://mypod.com/resources/roles/> .
+
+# Pod Definition
+pod: {
+  pod:
+    a o:Pod ;
+    rdf:label "My Pod" .
+}
+
+# Pod Configuration
+# TODO create an ontology for pod configuration
+
+# OID Configuration
+# TODO create an ontology for oid configuration
+
+# Default Roles
+n0:roles {
+  n0:roles
+    a ldp:Container ;
+    ldp:contains roles:Owner ;
+    ldp:contains n0 ;
+    rdf:label "Active Roles"^^xsd:string ;
+    rdf:description "A collection of all roles that are active on this pod."^^xsd:string .
+
+  # The owner is allowed to do anyting
+  roles:Owner
+    a o:Role ;
+    a o:PodRole ;
+    rdf:label "Owner Role"^^xsd:string ;
+    rdf:description "A role that grants access to do all triple operations"^^xsd:string ;
+    o:readQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . }}"^^xsd:string ;
+    o:insertQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . }}"^^xsd:string ;
+    o:deleteQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . }}"^^xsd:string ;
+    o:whitelistedRoleMember pod: .
+
+  # Some pods should be able to read all data
+  roles:Read_All
+    a o:Role ;
+    a o:PodRole ;
+    rdf:label "Read All"^^xsd:string ;
+    rdf:description "A role that grants access to read everything"^^xsd:string ;
+    o:readQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . }}"^^xsd:string .
+
+  # Some pods should be able to write to anything except for the roles
+  roles:Write_All
+    a o:Role ;
+    a o:PodRole ;
+    rdf:label "Read All Role"^^xsd:string ;
+    rdf:description "A role that grants access to write and delete everything"^^xsd:string ;
+    o:writeQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . } . FILTER (?g != <https://mypod.com/resources/roles>) }}"^^xsd:string .
+
+  # Allows members of a role to read the roles to which they are a member
+  roles:Read_Roles_if_Member
+    a o:Role ;
+    a o:PodRole ;
+    rdf:label "Read Roles if Member Role"^^xsd:string ;
+    rdf:description "A role that allows members to read information about roles as long as they are a member"^^xsd:string ;
+    o:readQuery "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <https://mypod.com/resources/roles> { ?s a <https://o.team/ontology/Role> . ?s <https://o.team/ontology/roleMember> [[requester]] . ?s ?p ?o } }"^^xsd:string ;
+    o:whitelistedRoleMember o:AllPods .
+
+  # By default all domains can read everything (They will be added to the blacklist if they want to make requests outside a user's environment)
+  roles:Default_Domain
+    a o:Role ;
+    a o:ClientRole ;
+    rdf:label "Default Domain Role"^^xsd:string ;
+    o:readQuery "CONSTRUCT { ?s ?p ?o } WHERE {{ GRAPH ?g { ?s ?p ?o . }}"^^xsd:string ;
+    o:allowedDomains "mypod.com"^^xsd:anyURI, "cdn.o.team"^^xsd:anyURI ;
+    o:whitelistedRoleDomain o:AllDomains .
+}
+
+# Default GraphQL configurations
+# TODO fill this in once you have a better grasp on how GraphQL is going to work
+
